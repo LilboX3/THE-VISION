@@ -94,7 +94,7 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("CHECKING IF WALL!!!!!!!!!");
 
-        float rayLength = 5.0f;
+        float rayLength = 1.0f;
 
         Debug.DrawRay(transform.position, intention * rayLength, Color.red, 1.0f);
 
@@ -120,17 +120,6 @@ public class PlayerController : MonoBehaviour
         }
 
         return isWall;
-
-        //TODO: check with raycast if theres wall
-        /*foreach (GameObject wall in GameObject.FindGameObjectsWithTag("Wall"))
-        {
-            if (wall.transform.position == intention)
-            {
-                print("There's a wall here!");
-                return true;
-            }
-        }
-        return false;*/
     }
 
     public void RotateLeft() { if (AtRest) targetRotation -= Vector3.up * rotationAngle; }
@@ -138,19 +127,19 @@ public class PlayerController : MonoBehaviour
 
     public void MoveForward()
     {
-        if (AtRest && !IsWall(/*targetGridPos + */ transform.forward + moveVectorUp)) targetGridPos += transform.forward;
+        if (AtRest && !IsWall(transform.forward + moveVectorUp)) targetGridPos += transform.forward;
     }
     public void MoveBackward()
     {
-        if (AtRest && !IsWall(/*targetGridPos - */ -transform.forward + moveVectorUp)) targetGridPos -= transform.forward;
+        if (AtRest && !IsWall(-transform.forward + moveVectorUp)) targetGridPos -= transform.forward;
     }
     public void MoveLeft()
     {
-        if (AtRest && !IsWall(/*targetGridPos - */ -transform.right + moveVectorUp)) targetGridPos -= transform.right;
+        if (AtRest && !IsWall(-transform.right + moveVectorUp)) targetGridPos -= transform.right;
     }
     public void MoveRight()
     {
-        if (AtRest && !IsWall(/*targetGridPos + */ transform.right + moveVectorUp)) targetGridPos += transform.right;
+        if (AtRest && !IsWall(transform.right + moveVectorUp)) targetGridPos += transform.right;
     }
 
 
