@@ -14,6 +14,9 @@ public class PlayerController : MonoBehaviour
     private float rotationAngle = 90f;
     private Vector3 moveVectorUp = new Vector3(0, 0.1f, 0);
 
+    private bool isHorizontalInUse = false;
+    private bool isVerticalInUse = false;
+
     Vector3 targetGridPos;
     Vector3 prevTargetGridPos;
     Vector3 targetRotation;
@@ -28,27 +31,54 @@ public class PlayerController : MonoBehaviour
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
 
-        if(horizontalInput < 0)
+
+            if (horizontalInput < 0)
+            {
+            if (!isHorizontalInUse)
+            {
+                MoveLeft();
+                isHorizontalInUse = true;
+            }
+            }
+            if (horizontalInput > 0)
+            {
+            if (!isHorizontalInUse)
+            {
+                MoveRight();
+                isHorizontalInUse = true;
+            }
+            }
+        if(horizontalInput == 0)
         {
-            MoveLeft();
+            isHorizontalInUse=false;
         }
-        if (horizontalInput > 0)
+
+            if (verticalInput < 0)
+            {
+            if (!isVerticalInUse)
+            {
+                MoveBackward();
+                isVerticalInUse = true;
+            }
+            }
+            if (verticalInput > 0)
+            {
+            if (!isVerticalInUse)
+            {
+                MoveForward();
+                isVerticalInUse = true;
+            }
+            }
+        if(verticalInput == 0)
         {
-            MoveRight();
+            isVerticalInUse = false ;
         }
-        if(verticalInput < 0)
-        {
-            MoveBackward();
-        }
-        if (verticalInput > 0)
-        {
-            MoveForward();
-        }
-        if (Input.GetButtonUp("Rotate left"))
+        
+        if (Input.GetButtonDown("Rotate left"))
         {
             RotateLeft();
         }
-        if (Input.GetButtonUp("Rotate right"))
+        if (Input.GetButtonDown("Rotate right"))
         {
             RotateRight();
         }
