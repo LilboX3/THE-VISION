@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -12,6 +10,8 @@ public class PlayerController : MonoBehaviour
 
     private float minStopDistance = 0.05f;
     private float rotationAngle = 90f;
+    private float horizontalInput;
+    private float verticalInput;
     private Vector3 moveVectorUp = new Vector3(0, 0.1f, 0);
 
     private bool isHorizontalInUse = false;
@@ -28,52 +28,50 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        SetInput();
 
-
-            if (horizontalInput < 0)
-            {
+        if (horizontalInput < 0)
+        {
             if (!isHorizontalInUse)
             {
                 MoveLeft();
                 isHorizontalInUse = true;
             }
-            }
-            if (horizontalInput > 0)
-            {
+        }
+        if (horizontalInput > 0)
+        {
             if (!isHorizontalInUse)
             {
                 MoveRight();
                 isHorizontalInUse = true;
             }
-            }
-        if(horizontalInput == 0)
+        }
+        if (horizontalInput == 0)
         {
-            isHorizontalInUse=false;
+            isHorizontalInUse = false;
         }
 
-            if (verticalInput < 0)
-            {
+        if (verticalInput < 0)
+        {
             if (!isVerticalInUse)
             {
                 MoveBackward();
                 isVerticalInUse = true;
             }
-            }
-            if (verticalInput > 0)
-            {
+        }
+        if (verticalInput > 0)
+        {
             if (!isVerticalInUse)
             {
                 MoveForward();
                 isVerticalInUse = true;
             }
-            }
-        if(verticalInput == 0)
-        {
-            isVerticalInUse = false ;
         }
-        
+        if (verticalInput == 0)
+        {
+            isVerticalInUse = false;
+        }
+
         if (Input.GetButtonDown("Rotate left"))
         {
             RotateLeft();
@@ -83,6 +81,19 @@ public class PlayerController : MonoBehaviour
             RotateRight();
         }
 
+    }
+
+    private void SetInput()
+    {
+        if(GameControllers.connected)
+        {
+            horizontalInput = Input.GetAxis("Horizontal DPAD");
+            verticalInput = Input.GetAxis("Vertical DPAD");
+        } else
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+        }
     }
 
     private void FixedUpdate()
@@ -131,7 +142,7 @@ public class PlayerController : MonoBehaviour
         RaycastHit hitWall;
         bool isWall = false;
 
-        if (Physics.Raycast(transform.position+moveVectorUp, intention, out hitWall, rayLength))
+        if (Physics.Raycast(transform.position + moveVectorUp, intention, out hitWall, rayLength))
         {
             Debug.Log("Hitting something at distance: " + hitWall.distance);
             isWall = hitWall.collider.gameObject.CompareTag("Wall");
