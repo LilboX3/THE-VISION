@@ -16,10 +16,21 @@ public class PlayerController : MonoBehaviour
 
     private bool isHorizontalInUse = false;
     private bool isVerticalInUse = false;
+    private bool isInCombat = false;
 
     Vector3 targetGridPos;
     Vector3 prevTargetGridPos;
     Vector3 targetRotation;
+
+    private void Awake()
+    {
+        GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
+    }
 
     private void Start()
     {
@@ -28,61 +39,66 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        SetInput();
-        PreventAxisInputFromGoingTooHigh();
+        if (!isInCombat)
+        {
+            SetInput();
+            PreventAxisInputFromGoingTooHigh();
 
-        Debug.Log(verticalInput);
-        if (horizontalInput < 0)
-        {
-            if (!isHorizontalInUse)
+            if (horizontalInput < 0)
             {
-                MoveLeft();
-                isHorizontalInUse = true;
+                if (!isHorizontalInUse)
+                {
+                    MoveLeft();
+                    isHorizontalInUse = true;
+                }
             }
-        }
-        if (horizontalInput > 0)
-        {
-            if (!isHorizontalInUse)
+            if (horizontalInput > 0)
             {
-                MoveRight();
-                isHorizontalInUse = true;
+                if (!isHorizontalInUse)
+                {
+                    MoveRight();
+                    isHorizontalInUse = true;
+                }
             }
-        }
-        if (horizontalInput == 0)
-        {
-            isHorizontalInUse = false;
-        }
+            if (horizontalInput == 0)
+            {
+                isHorizontalInUse = false;
+            }
 
-        if (verticalInput < 0)
-        {
-            if (!isVerticalInUse)
+            if (verticalInput < 0)
             {
-                MoveBackward();
-                isVerticalInUse = true;
+                if (!isVerticalInUse)
+                {
+                    MoveBackward();
+                    isVerticalInUse = true;
+                }
             }
-        }
-        if (verticalInput > 0)
-        {
-            if (!isVerticalInUse)
+            if (verticalInput > 0)
             {
-                MoveForward();
-                isVerticalInUse = true;
+                if (!isVerticalInUse)
+                {
+                    MoveForward();
+                    isVerticalInUse = true;
+                }
             }
-        }
-        if (verticalInput == 0)
-        {
-            isVerticalInUse = false;
-        }
+            if (verticalInput == 0)
+            {
+                isVerticalInUse = false;
+            }
 
-        if (Input.GetButtonDown("Rotate left"))
+            if (Input.GetButtonDown("Rotate left"))
+            {
+                RotateLeft();
+            }
+            if (Input.GetButtonDown("Rotate right"))
+            {
+                RotateRight();
+            }
+        } else
         {
-            RotateLeft();
+            GameManager.Instance.UpdateGameState(GameState.Movement);
+            Debug.Log("should move again");
         }
-        if (Input.GetButtonDown("Rotate right"))
-        {
-            RotateRight();
-        }
-
     }
 
     private void FixedUpdate()
@@ -201,9 +217,7 @@ public class PlayerController : MonoBehaviour
         if (AtRest && !IsWall(transform.right + moveVectorUp)) targetGridPos += transform.right;
     }
 
-
-
-    bool AtRest
+    private bool AtRest
     {
         get
         {
@@ -213,6 +227,25 @@ public class PlayerController : MonoBehaviour
                 return true;
             else
                 return false;
+        }
+    }
+
+    private void GameManagerOnGameStateChanged(GameState state)
+    {
+        //Subscribed to event that sends which state game is in
+        if(state == GameState.Movement)
+        {
+            isInCombat = false;
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Enemy"))
+        {
+            //Trigger combat if enemy trigger entered
+            GameManager.Instance.UpdateGameState(GameState.CombatStart);
+            isInCombat = true;
         }
     }
 }
