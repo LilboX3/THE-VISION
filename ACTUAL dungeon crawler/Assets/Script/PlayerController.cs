@@ -29,7 +29,9 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         SetInput();
+        PreventAxisInputFromGoingTooHigh();
 
+        Debug.Log(verticalInput);
         if (horizontalInput < 0)
         {
             if (!isHorizontalInUse)
@@ -83,19 +85,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    private void SetInput()
-    {
-        if(GameControllers.connected)
-        {
-            horizontalInput = Input.GetAxis("Horizontal DPAD");
-            verticalInput = Input.GetAxis("Vertical DPAD");
-        } else
-        {
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
-        }
-    }
-
     private void FixedUpdate()
     {
         MovePlayer();
@@ -103,33 +92,62 @@ public class PlayerController : MonoBehaviour
 
     void MovePlayer()
     {
-        if (true) //Platzhalter
+        prevTargetGridPos = targetGridPos;
+
+        Vector3 targetPosition = targetGridPos;
+
+        //avoid negative or >360 degrees
+        if (targetRotation.y > 270f && targetRotation.y < 361f) targetRotation.y = 0f;
+        if (targetRotation.y < 0f) targetRotation.y = 270f;
+
+        if (!smoothTransition)
         {
-            prevTargetGridPos = targetGridPos;
-
-            Vector3 targetPosition = targetGridPos;
-
-            //avoid negative or >360 degrees
-            if (targetRotation.y > 270f && targetRotation.y < 361f) targetRotation.y = 0f;
-            if (targetRotation.y < 0f) targetRotation.y = 270f;
-
-            if (!smoothTransition)
-            {
-                transform.position = targetPosition;
-                transform.rotation = Quaternion.Euler(targetRotation);
-            }
-            else
-            {
-                transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * transitionSpeed);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(targetRotation), Time.deltaTime * transitionRotationSpeed);
-            }
+            transform.position = targetPosition;
+            transform.rotation = Quaternion.Euler(targetRotation);
         }
         else
         {
-            targetGridPos = prevTargetGridPos;
+            transform.position = Vector3.MoveTowards(transform.position, targetPosition, Time.deltaTime * transitionSpeed);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(targetRotation), Time.deltaTime * transitionRotationSpeed);
         }
 
     }
+
+    private void SetInput()
+    {
+        if (GameControllers.connected)
+        {
+            horizontalInput = Input.GetAxis("Horizontal DPAD");
+            verticalInput = Input.GetAxis("Vertical DPAD");
+        }
+        else
+        {
+            horizontalInput = Input.GetAxis("Horizontal");
+            verticalInput = Input.GetAxis("Vertical");
+        }
+    }
+
+    private void PreventAxisInputFromGoingTooHigh()
+    {
+        if (horizontalInput > 0.5)
+        {
+            horizontalInput = 0.5f;
+        }
+        if (horizontalInput < -0.5)
+        {
+            horizontalInput = -0.5f;
+        }
+        if (verticalInput > 0.5)
+        {
+            verticalInput = 0.5f;
+        }
+        if (verticalInput < -0.5)
+        {
+            verticalInput = -0.5f;
+        }
+    }
+
+
 
     public bool IsWall(Vector3 intention)
     {
