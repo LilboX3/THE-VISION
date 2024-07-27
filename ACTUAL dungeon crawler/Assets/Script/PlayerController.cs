@@ -129,21 +129,21 @@ public class PlayerController : MonoBehaviour
 
     private void PreventAxisInputFromGoingTooHigh()
     {
-        if (horizontalInput > 0.5)
+        if (horizontalInput > 0.4)
         {
-            horizontalInput = 0.5f;
+            horizontalInput = 0.4f;
         }
-        if (horizontalInput < -0.5)
+        if (horizontalInput < -0.4)
         {
-            horizontalInput = -0.5f;
+            horizontalInput = -0.4f;
         }
-        if (verticalInput > 0.5)
+        if (verticalInput > 0.4)
         {
-            verticalInput = 0.5f;
+            verticalInput = 0.4f;
         }
-        if (verticalInput < -0.5)
+        if (verticalInput < -0.4)
         {
-            verticalInput = -0.5f;
+            verticalInput = -0.4f;
         }
     }
 
