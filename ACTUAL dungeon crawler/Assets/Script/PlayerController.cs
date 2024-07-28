@@ -10,11 +10,11 @@ public class PlayerController : MonoBehaviour
 
     private float minStopDistance = 0.05f;
     private float rotationAngle = 90f;
-    private float horizontalInput;
+    //private float horizontalInput;
     private float verticalInput;
     private Vector3 moveVectorUp = new Vector3(0, 0.1f, 0);
 
-    private bool isHorizontalInUse = false;
+    //private bool isHorizontalInUse = false;
     private bool isVerticalInUse = false;
     private bool isInCombat = false;
 
@@ -42,9 +42,9 @@ public class PlayerController : MonoBehaviour
         if (!isInCombat)
         {
             SetInput();
-            PreventAxisInputFromGoingTooHigh();
+            Debug.Log(verticalInput);
 
-            if (horizontalInput < 0)
+            /*if (horizontalInput < 0)
             {
                 if (!isHorizontalInUse)
                 {
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
             if (horizontalInput == 0)
             {
                 isHorizontalInUse = false;
-            }
+            }*/
 
             if (verticalInput < 0)
             {
@@ -133,38 +133,18 @@ public class PlayerController : MonoBehaviour
     {
         if (GameControllers.connected)
         {
-            horizontalInput = Input.GetAxis("Horizontal DPAD");
-            verticalInput = Input.GetAxis("Vertical DPAD");
+            //horizontalInput = Input.GetAxisRaw("Horizontal DPAD");
+            verticalInput = Input.GetAxisRaw("Vertical DPAD");
         }
         else
         {
-            horizontalInput = Input.GetAxis("Horizontal");
-            verticalInput = Input.GetAxis("Vertical");
-        }
-    }
-
-    private void PreventAxisInputFromGoingTooHigh()
-    {
-        if (horizontalInput > 0.4)
-        {
-            horizontalInput = 0.4f;
-        }
-        if (horizontalInput < -0.4)
-        {
-            horizontalInput = -0.4f;
-        }
-        if (verticalInput > 0.4)
-        {
-            verticalInput = 0.4f;
-        }
-        if (verticalInput < -0.4)
-        {
-            verticalInput = -0.4f;
+            //horizontalInput = Input.GetAxisRaw("Horizontal");
+            verticalInput = Input.GetAxisRaw("Vertical");
         }
     }
 
 
-
+    //TODO: raycast if enemy
     public bool IsWall(Vector3 intention)
     {
         Debug.Log("CHECKING IF WALL!!!!!!!!!");
@@ -208,14 +188,14 @@ public class PlayerController : MonoBehaviour
     {
         if (AtRest && !IsWall(-transform.forward + moveVectorUp)) targetGridPos -= transform.forward;
     }
-    public void MoveLeft()
+    /*public void MoveLeft()
     {
         if (AtRest && !IsWall(-transform.right + moveVectorUp)) targetGridPos -= transform.right;
     }
     public void MoveRight()
     {
         if (AtRest && !IsWall(transform.right + moveVectorUp)) targetGridPos += transform.right;
-    }
+    }*/
 
     private bool AtRest
     {
