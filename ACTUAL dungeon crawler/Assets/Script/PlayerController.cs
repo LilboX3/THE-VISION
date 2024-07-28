@@ -159,14 +159,17 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(transform.position + moveVectorUp, intention, out hitWall, rayLength))
         {
             Debug.Log("Hitting something at distance: " + hitWall.distance);
-            isWall = hitWall.collider.gameObject.CompareTag("Wall");
-            if (isWall)
+            if (hitWall.collider.gameObject.CompareTag("Wall"))
             {
                 Debug.Log("THERE IS WALL");
+                isWall = true;
             }
-            else
+            else if(hitWall.collider.gameObject.CompareTag("Enemy"))
             {
                 Debug.Log("Hit something, but it's not a wall. It's a " + hitWall.collider.gameObject.tag);
+                GameManager.Instance.UpdateGameState(GameState.CombatStart);
+                isInCombat = true;
+                isWall = true; //dont walk into enemy
             }
         }
         else
