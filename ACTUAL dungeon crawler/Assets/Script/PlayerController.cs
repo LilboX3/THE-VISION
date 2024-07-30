@@ -1,4 +1,7 @@
+using System.Collections;
+using System.Data;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -6,7 +9,12 @@ public class PlayerController : MonoBehaviour
     public float transitionSpeed = 3f;
     public float transitionRotationSpeed = 500f;
 
-    public float range = 2;
+    public Slider healthBar;
+    public Image healthImage;
+    public float healthAmount = 7f;
+    public Slider manaBar;
+    public Image manaImage;
+    public float manaAmount = 7f;
 
     private float minStopDistance = 0.05f;
     private float rotationAngle = 90f;
@@ -22,19 +30,20 @@ public class PlayerController : MonoBehaviour
     Vector3 prevTargetGridPos;
     Vector3 targetRotation;
 
-    private void Awake()
-    {
-        GameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
-    }
-
-    private void OnDestroy()
-    {
-        GameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
-    }
-
     private void Start()
     {
         targetGridPos = Vector3Int.RoundToInt(transform.position);
+        StartCoroutine(LoseHealth());
+    }
+
+    IEnumerator LoseHealth()
+    {
+        for(int i=0; i<7; i++)
+        {
+            yield return new WaitForSeconds(1f);
+            Debug.Log("took 1 damage");
+            TakeDamage(1);
+        }
     }
 
     private void Update()
@@ -42,7 +51,6 @@ public class PlayerController : MonoBehaviour
         if (!isInCombat)
         {
             SetInput();
-            Debug.Log(verticalInput);
 
             /*if (horizontalInput < 0)
             {
@@ -213,13 +221,26 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void GameManagerOnGameStateChanged(GameState state)
+    public void PlayerTurn()
     {
-        //Subscribed to event that sends which state game is in
-        if(state == GameState.Movement)
-        {
-            isInCombat = false;
-        }
+
+    }
+
+    public void TakeDamage(float damage)
+    {
+        healthAmount -= damage;
+        healthBar.value = healthAmount;
+        Debug.Log("fill amount is now: "+healthBar.value);
+    }
+
+    public void DisableMovement()
+    {
+        isInCombat = true;
+    }
+
+    public void EnableMovement()
+    {
+        isInCombat |= false;
     }
 
     private void OnTriggerEnter(Collider other)

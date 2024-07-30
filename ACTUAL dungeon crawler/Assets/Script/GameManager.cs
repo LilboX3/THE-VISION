@@ -4,9 +4,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    public static event Action<GameState> OnGameStateChanged;
 
     private CombatManager combatManager;
+    [SerializeField]
+    private PlayerController playerController;
 
     public GameState State;
 
@@ -23,25 +24,26 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-    }
-
-    public void UpdateGameState(GameState newState)
-    {
-        State = newState;
-        switch (newState)
+        switch (State)
         {
             case GameState.Movement:
                 break;
             case GameState.CombatStart:
                 Debug.Log("STARTING COMBAT!!!");
+                playerController.DisableMovement();
                 combatManager.OpenCombatScreen();
+                State = GameState.PlayerTurn;
                 break;
             case GameState.PlayerTurn:
+                playerController.PlayerTurn();
+                CheckWinner();
                 break;
             case GameState.EnemyTurn:
+                //enemyController.EnemyTurn();
+                CheckWinner();
                 break;
             case GameState.Victory:
+                playerController.EnableMovement();
                 combatManager.CloseCombatScreen();
                 break;
             case GameState.Loss:
@@ -49,10 +51,18 @@ public class GameManager : MonoBehaviour
                 break;
             default:
                 throw new NotImplementedException();
-                //press Alt+enter to generate automatically
         }
-        OnGameStateChanged?.Invoke(newState); //Only invoke if someones subscribe
+    }
+
+    public void UpdateGameState(GameState newState)
+    {
+        State = newState;
         Debug.Log("Updated gamestate to: " + newState);
+    }
+
+    public void CheckWinner()
+    {
+
     }
 }
 
