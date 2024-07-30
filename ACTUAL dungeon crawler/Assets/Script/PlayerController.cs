@@ -33,21 +33,11 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         targetGridPos = Vector3Int.RoundToInt(transform.position);
-        StartCoroutine(LoseHealth());
-    }
-
-    IEnumerator LoseHealth()
-    {
-        for(int i=0; i<7; i++)
-        {
-            yield return new WaitForSeconds(1f);
-            Debug.Log("took 1 damage");
-            TakeDamage(1);
-        }
     }
 
     private void Update()
     {
+        Debug.Log("in combat: "+isInCombat);
         if (!isInCombat)
         {
             SetInput();
@@ -102,10 +92,6 @@ public class PlayerController : MonoBehaviour
             {
                 RotateRight();
             }
-        } else
-        {
-            GameManager.Instance.UpdateGameState(GameState.Movement);
-            Debug.Log("should move again");
         }
     }
 
@@ -155,7 +141,6 @@ public class PlayerController : MonoBehaviour
     //TODO: raycast if enemy
     public bool IsWall(Vector3 intention)
     {
-        Debug.Log("CHECKING IF WALL!!!!!!!!!");
 
         float rayLength = 1.0f;
 
@@ -166,10 +151,8 @@ public class PlayerController : MonoBehaviour
 
         if (Physics.Raycast(transform.position + moveVectorUp, intention, out hitWall, rayLength))
         {
-            Debug.Log("Hitting something at distance: " + hitWall.distance);
             if (hitWall.collider.gameObject.CompareTag("Wall"))
             {
-                Debug.Log("THERE IS WALL");
                 isWall = true;
             }
             else if(hitWall.collider.gameObject.CompareTag("Enemy"))
@@ -226,11 +209,21 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    public bool IsPlayerDead()
+    {
+        return healthAmount == 0;
+    }
+
     public void TakeDamage(float damage)
     {
         healthAmount -= damage;
         healthBar.value = healthAmount;
-        Debug.Log("fill amount is now: "+healthBar.value);
+    }
+
+    public void LoseMana(float manaLost)
+    {
+        manaAmount -= manaLost;
+        manaBar.value = manaAmount;
     }
 
     public void DisableMovement()
@@ -240,7 +233,7 @@ public class PlayerController : MonoBehaviour
 
     public void EnableMovement()
     {
-        isInCombat |= false;
+        isInCombat = false;
     }
 
     private void OnTriggerEnter(Collider other)

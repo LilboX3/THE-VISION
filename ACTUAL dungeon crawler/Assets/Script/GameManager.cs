@@ -1,12 +1,14 @@
 using System;
+using System.Collections;
+using UnityEditor.Animations;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    public GameObject playerObject;
 
     private CombatManager combatManager;
-    [SerializeField]
     private PlayerController playerController;
 
     public GameState State;
@@ -19,50 +21,63 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         combatManager = GetComponent<CombatManager>();
+        playerController = playerObject.GetComponent<PlayerController>();
+        UpdateGameState(GameState.Movement);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void CombatLoop()
     {
-        switch (State)
+        while (true)
         {
-            case GameState.Movement:
+            playerController.PlayerTurn();
+            if (PlayerWon())
+            {
+                State = GameState.Victory;
                 break;
-            case GameState.CombatStart:
-                Debug.Log("STARTING COMBAT!!!");
-                playerController.DisableMovement();
-                combatManager.OpenCombatScreen();
-                State = GameState.PlayerTurn;
+            }
+            //enemyController.EnemyTurn();
+            if (EnemyWon())
+            {
+                State = GameState.Loss;
                 break;
-            case GameState.PlayerTurn:
-                playerController.PlayerTurn();
-                CheckWinner();
-                break;
-            case GameState.EnemyTurn:
-                //enemyController.EnemyTurn();
-                CheckWinner();
-                break;
-            case GameState.Victory:
-                playerController.EnableMovement();
-                combatManager.CloseCombatScreen();
-                break;
-            case GameState.Loss:
-                combatManager.CloseCombatScreen();
-                break;
-            default:
-                throw new NotImplementedException();
+            }
         }
     }
 
     public void UpdateGameState(GameState newState)
     {
         State = newState;
+        switch (State)
+        {
+            case GameState.Movement:
+                playerController.EnableMovement();
+                Debug.Log("moving is allowed");
+                break;
+            case GameState.CombatStart:
+                playerController.DisableMovement();
+                combatManager.OpenCombatScreen();
+                CombatLoop(); //coroutine sollt erst weitergehn und nach state checken, wenn combat vorbei ist
+                break;
+            case GameState.Victory:
+                combatManager.CloseCombatScreen();
+                break;
+            case GameState.Loss:
+                combatManager.CloseCombatScreen();
+                break;
+
+        }
         Debug.Log("Updated gamestate to: " + newState);
     }
-
-    public void CheckWinner()
+    
+    private bool PlayerWon()
     {
+        return playerController.IsPlayerDead();
+    }
 
+    private bool EnemyWon()
+    {
+        //return enemyController.IsEnemyDead();
+        return true;
     }
 }
 
@@ -71,8 +86,6 @@ public enum GameState
     //in combat etc.
     Movement,
     CombatStart,
-    PlayerTurn,
-    EnemyTurn,
     Victory,
     Loss
 }
