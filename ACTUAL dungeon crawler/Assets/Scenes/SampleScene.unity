@@ -4544,7 +4544,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34cdc93c674812246b1ea100c31e9324, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerController: {fileID: 2056979124}
+  playerObject: {fileID: 2056979120}
   State: 0
 --- !u!114 &458232165
 MonoBehaviour:

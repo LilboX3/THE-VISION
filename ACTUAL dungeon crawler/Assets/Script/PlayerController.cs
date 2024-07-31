@@ -159,7 +159,6 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Hit something, but it's not a wall. It's a " + hitWall.collider.gameObject.tag);
                 GameManager.Instance.UpdateGameState(GameState.CombatStart);
-                isInCombat = true;
                 isWall = true; //dont walk into enemy
             }
         }
@@ -233,6 +232,7 @@ public class PlayerController : MonoBehaviour
 
     public void EnableMovement()
     {
+        Debug.Log("NOW MOVE");
         isInCombat = false;
     }
 

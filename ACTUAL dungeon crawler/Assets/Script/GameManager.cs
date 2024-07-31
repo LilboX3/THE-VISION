@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
             //enemyController.EnemyTurn();
             if (EnemyWon())
             {
-                State = GameState.Loss;
+                UpdateGameState(GameState.Loss);
                 break;
             }
         }
@@ -47,6 +47,7 @@ public class GameManager : MonoBehaviour
     public void UpdateGameState(GameState newState)
     {
         State = newState;
+        Debug.Log("Updated gamestate to: " + newState);
         switch (State)
         {
             case GameState.Movement:
@@ -66,7 +67,6 @@ public class GameManager : MonoBehaviour
                 break;
 
         }
-        Debug.Log("Updated gamestate to: " + newState);
     }
     
     private bool PlayerWon()
