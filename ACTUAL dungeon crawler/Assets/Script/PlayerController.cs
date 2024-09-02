@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Data;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,6 +23,7 @@ public class PlayerController : MonoBehaviour
     //private bool isHorizontalInUse = false;
     private bool isVerticalInUse = false;
     private bool isInCombat = false;
+    private bool lookingUp = false;
 
     Vector3 targetGridPos;
     Vector3 prevTargetGridPos;
@@ -37,7 +36,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log("in combat: "+isInCombat);
+        //Debug.Log("in combat: "+isInCombat);
         if (!isInCombat)
         {
             SetInput();
@@ -84,13 +83,23 @@ public class PlayerController : MonoBehaviour
                 isVerticalInUse = false;
             }
 
-            if (Input.GetButtonDown("Rotate left"))
+            if (Input.GetButtonDown("Rotate left") && !lookingUp)
             {
                 RotateLeft();
             }
-            if (Input.GetButtonDown("Rotate right"))
+            if (Input.GetButtonDown("Rotate right") && !lookingUp)
             {
                 RotateRight();
+            }
+            if(Input.GetButtonDown("Look up"))
+            {
+                RotateUp();
+                lookingUp = true;
+            }
+            if(Input.GetButtonDown("Look up") && lookingUp)
+            {
+                RotateDown();
+                lookingUp = false;
             }
         }
     }
@@ -172,6 +181,8 @@ public class PlayerController : MonoBehaviour
 
     public void RotateLeft() { if (AtRest) targetRotation -= Vector3.up * rotationAngle; }
     public void RotateRight() { if (AtRest) targetRotation += Vector3.up * rotationAngle; }
+    public void RotateUp() { if (AtRest) targetRotation += Vector3.left * rotationAngle; }
+    public void RotateDown() { if (AtRest) targetRotation += Vector3.left * -rotationAngle; }
 
     public void MoveForward()
     {
