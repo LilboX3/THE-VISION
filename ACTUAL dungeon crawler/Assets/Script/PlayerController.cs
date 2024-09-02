@@ -104,7 +104,6 @@ public class PlayerController : MonoBehaviour
                     lookingUp = true;
                 }
             }
-            Debug.Log("Wall behind: " + IsWallBehindPlayer());
         }
     }
 
