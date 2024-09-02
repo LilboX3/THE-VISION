@@ -186,7 +186,7 @@ public class PlayerController : MonoBehaviour
     public void RotateLeft() { if (AtRest) targetRotation -= Vector3.up * rotationAngle; }
     public void RotateRight() { if (AtRest) targetRotation += Vector3.up * rotationAngle; }
     public void RotateUp() { if (AtRest) targetRotation += Vector3.left * rotationAngle; }
-    public void RotateDown() { if (AtRest) targetRotation.x = 0; }
+    public void RotateDown() { targetRotation.x = 0; }
 
     public void MoveForward()
     {
@@ -211,8 +211,7 @@ public class PlayerController : MonoBehaviour
         {
             //At rest when stopped moving or rotating, or when about to stop (distance small enough)
             if ((Vector3.Distance(transform.position, targetGridPos) < minStopDistance) &&
-                (Vector3.Distance(transform.eulerAngles, targetRotation) < minStopDistance)
-                || (Vector3.Distance(transform.position, targetGridPos) < minStopDistance) && targetRotation.x == -90) //TODO: fix atrest for fuck sake
+                (Vector3.Distance(transform.eulerAngles, targetRotation) < minStopDistance)) //TODO: fix atrest for fuck sake
                 return true;
             else
                 return false;
