@@ -92,20 +92,19 @@ public class PlayerController : MonoBehaviour
             {
                 RotateRight();
             }
-            if (Input.GetButtonDown("Look up"))
+            if (Input.GetButtonDown("Look up") && !IsWallBehindPlayer())
             {
                 if (lookingUp)
                 {
-                    Debug.Log("trying to rotate down");
                     RotateDown();
                     lookingUp = false;
                 } else
                 {
-                    Debug.Log("rotating up");
                     RotateUp();
                     lookingUp = true;
                 }
             }
+            Debug.Log("Wall behind: " + IsWallBehindPlayer());
         }
     }
 
@@ -173,6 +172,31 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("Hit something, but it's not a wall. It's a " + hitWall.collider.gameObject.tag);
                 GameManager.Instance.UpdateGameState(GameState.CombatStart);
                 isWall = true; //dont walk into enemy
+            }
+        }
+        else
+        {
+            Debug.Log("Nothing hit by the ray.");
+        }
+
+        return isWall;
+    }
+
+    public bool IsWallBehindPlayer()
+    {
+        float rayLength = 1.0f;
+        Vector3 direction = -transform.forward;
+
+        Debug.DrawRay(transform.position, direction * rayLength, Color.red, 1.0f);
+
+        RaycastHit hitWall;
+        bool isWall = false;
+
+        if (Physics.Raycast(transform.position + moveVectorUp, direction, out hitWall, rayLength))
+        {
+            if (hitWall.collider.gameObject.CompareTag("Wall"))
+            {
+                isWall = true;
             }
         }
         else
