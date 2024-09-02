@@ -10230,6 +10230,10 @@ PrefabInstance:
       value: Render Camera - DO IN FACT ADJUST
       objectReference: {fileID: 0}
     - target: {fileID: 199512, guid: d6a6378baf728479c897f88a892620af, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 199512, guid: d6a6378baf728479c897f88a892620af, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
