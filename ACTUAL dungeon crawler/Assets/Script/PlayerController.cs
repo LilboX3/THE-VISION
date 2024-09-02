@@ -31,10 +31,11 @@ public class PlayerController : MonoBehaviour
     Vector3 targetRotation;
 
     private void Start()
-    {
-        targetGridPos = Vector3Int.RoundToInt(transform.position);
-    }
-
+ {
+     int targetX = (int)transform.position.x;
+     int targetZ = (int)transform.position.z;
+     targetGridPos = new Vector3(targetX, transform.position.y, targetZ);
+ }
     private void Update()
     {
         //Debug.Log("in combat: "+isInCombat);
