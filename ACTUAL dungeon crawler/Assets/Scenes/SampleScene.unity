@@ -19925,6 +19925,10 @@ MonoBehaviour:
   manaBar: {fileID: 89097565}
   manaImage: {fileID: 1858838067}
   manaAmount: 7
+  sinStat: 4
+  prayerStat: 4
+  meleeStat: 4
+  magicStat: 4
 --- !u!1001 &2060764893
 PrefabInstance:
   m_ObjectHideFlags: 0
