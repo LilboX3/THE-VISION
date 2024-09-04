@@ -1,8 +1,9 @@
+using Assets.Script;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WeaponController : MonoBehaviour
+public class WeaponController : MonoBehaviour, IEquipment
 {
     public int damageModifier;
     public Weapon weaponType;

@@ -1,3 +1,4 @@
+using Assets.Script;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,6 +8,7 @@ public class PlayerController : MonoBehaviour
     public bool smoothTransition = false;
     public float transitionSpeed = 3f;
     public float transitionRotationSpeed = 500f;
+    public IEquipment[] items = new IEquipment[3];
 
     public Slider healthBar;
     public Image healthImage;
