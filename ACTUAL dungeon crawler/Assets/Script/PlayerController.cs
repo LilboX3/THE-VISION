@@ -155,8 +155,9 @@ public class PlayerController : MonoBehaviour
     {
 
         float rayLength = 1.0f;
+        Vector3 origin = new Vector3(transform.position.x, transform.position.y-0.5f, transform.position.z);
 
-        Debug.DrawRay(transform.position, intention * rayLength, Color.red, 1.0f);
+        Debug.DrawRay(origin, intention * rayLength, Color.red, 1.0f);
 
         RaycastHit hitWall;
         bool isWall = false;
@@ -165,6 +166,7 @@ public class PlayerController : MonoBehaviour
         {
             if (hitWall.collider.gameObject.CompareTag("Wall"))
             {
+                Debug.Log("HIT A WALL FR!!!!!!.");
                 isWall = true;
             }
             else if(hitWall.collider.gameObject.CompareTag("Enemy"))
@@ -244,7 +246,15 @@ public class PlayerController : MonoBehaviour
 
     public void PlayerTurn()
     {
-
+        /*
+         * Normale Attack Melee
+         * Magic Attack
+         * Prayer
+         * Mystery 4th mf
+         Rock-Paper-Scissors mit 4
+        Melee > Magic > mystery 4th > prayer > melee
+        --> Man hat NIE alle 4, nur main weapon und 2 andere weapons
+         */
     }
 
     public bool IsPlayerDead()
@@ -273,6 +283,13 @@ public class PlayerController : MonoBehaviour
     {
         Debug.Log("NOW MOVE");
         isInCombat = false;
+    }
+
+    public void GetJumpscared()
+    {
+        //TODO: Any extra info/mechanics for jumpscare enemy?
+        GameManager.Instance.UpdateGameState(GameState.CombatStart);
+        isInCombat = true;
     }
 
     private void OnTriggerEnter(Collider other)

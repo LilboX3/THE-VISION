@@ -15,4 +15,9 @@ public class EnemyController : MonoBehaviour
     {
         
     }
+
+    public void EnemyTurn()
+    {
+
+    }
 }

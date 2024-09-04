@@ -52,7 +52,6 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Movement:
                 playerController.EnableMovement();
-                Debug.Log("moving is allowed");
                 break;
             case GameState.CombatStart:
                 playerController.DisableMovement();
