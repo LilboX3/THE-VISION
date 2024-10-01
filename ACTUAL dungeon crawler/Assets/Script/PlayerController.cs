@@ -17,10 +17,8 @@ public class PlayerController : MonoBehaviour
     public Image manaImage;
     public float manaAmount = 7f;
 
-    public int sinStat;
-    public int prayerStat;
-    public int meleeStat;
-    public int magicStat;
+    public Element.ElementType element;
+    public int elementStat;
 
     private float minStopDistance = 0.05f;
     private float rotationAngle = 90f;

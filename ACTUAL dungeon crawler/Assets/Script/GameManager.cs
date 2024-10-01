@@ -25,25 +25,6 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.Movement);
     }
 
-    private void CombatLoop()
-    {
-        while (true)
-        {
-            playerController.PlayerTurn();
-            if (PlayerWon())
-            {
-                State = GameState.Victory;
-                break;
-            }
-            //enemyController.EnemyTurn();
-            if (EnemyWon())
-            {
-                UpdateGameState(GameState.Loss);
-                break;
-            }
-        }
-    }
-
     public void UpdateGameState(GameState newState)
     {
         State = newState;
@@ -56,7 +37,7 @@ public class GameManager : MonoBehaviour
             case GameState.CombatStart:
                 playerController.DisableMovement();
                 combatManager.OpenCombatScreen();
-                CombatLoop(); //coroutine sollt erst weitergehn und nach state checken, wenn combat vorbei ist
+                combatManager.CombatLoop();
                 break;
             case GameState.Victory:
                 combatManager.CloseCombatScreen();
@@ -67,17 +48,7 @@ public class GameManager : MonoBehaviour
 
         }
     }
-    
-    private bool PlayerWon()
-    {
-        return playerController.IsPlayerDead();
-    }
-
-    private bool EnemyWon()
-    {
-        //return enemyController.IsEnemyDead();
-        return true;
-    }
+  
 }
 
 public enum GameState
