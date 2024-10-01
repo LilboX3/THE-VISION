@@ -10,6 +10,7 @@ public class CombatManager : MonoBehaviour
     public TextMeshProUGUI enemyHealthText;
     public GameObject playerObject;
     public GameObject enemyObject;
+    public GameObject continueButton;
 
     private PlayerController playerController;
     private EnemyController enemyController;
@@ -39,7 +40,9 @@ public class CombatManager : MonoBehaviour
             else if (PlayerWon())
             {
                 inCombat = false;
+                Destroy(enemyObject);
                 GameManager.Instance.UpdateGameState(GameState.Victory);
+                continueButton.SetActive(true);
             }
             else if (EnemyWon())
             {
@@ -78,6 +81,12 @@ public class CombatManager : MonoBehaviour
     public void CloseCombatScreen()
     {
         _combatScreen.SetActive(false);
+    }
+
+    public void ContinueMoving()
+    {
+        playerController.EnableMovement();
+        continueButton.SetActive(false);
     }
 
     public void SetEnemy(GameObject enemy)
