@@ -38,10 +38,12 @@ public class CombatManager : MonoBehaviour
             }
             else if (PlayerWon())
             {
+                inCombat = false;
                 GameManager.Instance.UpdateGameState(GameState.Victory);
             }
             else if (EnemyWon())
             {
+                inCombat = false;
                 GameManager.Instance.UpdateGameState(GameState.Loss);
             }
         }
