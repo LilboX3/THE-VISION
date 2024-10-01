@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject playerObject;
+    public GameObject enemyObject;
 
     private CombatManager combatManager;
     private PlayerController playerController;
@@ -36,8 +37,9 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.CombatStart:
                 playerController.DisableMovement();
+                combatManager.SetEnemy(enemyObject);
                 combatManager.OpenCombatScreen();
-                combatManager.CombatLoop();
+                combatManager.StartCombat();
                 break;
             case GameState.Victory:
                 combatManager.CloseCombatScreen();

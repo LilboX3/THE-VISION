@@ -1,62 +1,104 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class CombatManager : MonoBehaviour
 {
-    [SerializeField] private GameObject _combatScreen;
+    public GameObject _combatScreen;
+    public TextMeshProUGUI combatText;
+    public TextMeshProUGUI enemyHealthText;
     public GameObject playerObject;
     public GameObject enemyObject;
+
+    private PlayerController playerController;
+    private EnemyController enemyController;
+
+    private CombatState currentState;
+    private bool inCombat = false;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerController = playerObject.GetComponent<PlayerController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void CombatLoop()
-    {
-        while (true)
+        if (inCombat)
         {
-            //playerController.PlayerTurn();
-            if (PlayerWon())
+            if(currentState == CombatState.EnemyTurn)
+            {
+                /*float damageModifier = Element.getDamageModifierAttackedBy(playerController.element, enemyController.element);
+                float damageAgainstPlayer = playerController.elementStat * damageModifier;
+                playerController.TakeDamage(damageAgainstPlayer);*/
+                playerController.TakeDamage(0.5f);
+                currentState = CombatState.PlayerTurn;
+            }
+            else if (PlayerWon())
             {
                 GameManager.Instance.UpdateGameState(GameState.Victory);
-                break;
             }
-            //enemyController.EnemyTurn();
-            if (EnemyWon())
+            else if (EnemyWon())
             {
                 GameManager.Instance.UpdateGameState(GameState.Loss);
-                break;
             }
         }
     }
-    private bool PlayerWon()
+
+    public void StartCombat()
     {
-        //return playerController.IsPlayerDead();
-        return true;
+        inCombat = true;
+        currentState = CombatState.PlayerTurn;
+        Debug.Log("Combat manager is in combat too");
     }
 
-    private bool EnemyWon()
+    public void AttackEnemy()
     {
-        //return enemyController.IsEnemyDead();
-        return true;
+        if (currentState == CombatState.PlayerTurn)
+        {
+            float damageModifier = Element.getDamageModifierAttackedBy(enemyController.element, playerController.element);
+            float damageAgainstEnemy = playerController.elementStat * damageModifier;
+            enemyController.TakeDamage(damageAgainstEnemy);
+            enemyHealthText.text = "Enemy: " + enemyController.health;
+            currentState = CombatState.EnemyTurn;
+        }
     }
 
     public void OpenCombatScreen()
     {
+        combatText.text = "A " + enemyController.name + " appears!";
+        enemyHealthText.text = "Enemy: " + enemyController.health;
         _combatScreen.SetActive(true);
     }
 
     public void CloseCombatScreen()
     {
         _combatScreen.SetActive(false);
+    }
+
+    public void SetEnemy(GameObject enemy)
+    {
+        enemyObject = enemy;
+        enemyController = enemyObject.GetComponent<EnemyController>();
+    }
+
+    private bool PlayerWon()
+    {
+        return enemyController.IsEnemyDead();
+    }
+
+    private bool EnemyWon()
+    {
+        return playerController.IsPlayerDead();
+    }
+
+    public enum CombatState
+    {
+        PlayerTurn,
+        EnemyTurn,
+        Victory,
+        Loss
     }
 }

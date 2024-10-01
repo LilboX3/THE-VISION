@@ -6,7 +6,8 @@ public class EnemyController : MonoBehaviour
 {
     public Element.ElementType element;
     public int elementStat;
-    public int health;
+    public float health;
+    public string name;
 
     // Start is called before the first frame update
     void Start()
@@ -23,5 +24,15 @@ public class EnemyController : MonoBehaviour
     public void EnemyTurn()
     {
 
+    }
+
+    public bool IsEnemyDead()
+    {
+        return health <= 0;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        health -= damage;
     }
 }

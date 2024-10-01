@@ -12,7 +12,7 @@ public class Element : MonoBehaviour
         Prayer
     }
 
-    public static double getDamageModifierAttackedBy(ElementType thisElement, ElementType otherElement)
+    public static float getDamageModifierAttackedBy(ElementType thisElement, ElementType otherElement)
     {
         switch (thisElement)
         {

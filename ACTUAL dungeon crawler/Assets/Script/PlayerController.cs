@@ -43,7 +43,6 @@ public class PlayerController : MonoBehaviour
  }
     private void Update()
     {
-        //Debug.Log("in combat: "+isInCombat);
         if (!isInCombat)
         {
             SetInput();
@@ -177,7 +176,9 @@ public class PlayerController : MonoBehaviour
             else if(hitWall.collider.gameObject.CompareTag("Enemy"))
             {
                 Debug.Log("Hit something, but it's not a wall. It's a " + hitWall.collider.gameObject.tag);
+                GameManager.Instance.enemyObject = hitWall.collider.gameObject;
                 GameManager.Instance.UpdateGameState(GameState.CombatStart);
+                isInCombat = true;
                 isWall = true; //dont walk into enemy
             }
         }
@@ -249,22 +250,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void PlayerTurn()
-    {
-        /*
-         * Normale Attack Melee
-         * Magic Attack
-         * Prayer
-         * Mystery 4th mf
-         Rock-Paper-Scissors mit 4
-        Melee > Magic > mystery 4th > prayer > melee
-        --> Man hat NIE alle 4, nur main weapon und 2 andere weapons
-         */
-    }
-
     public bool IsPlayerDead()
     {
-        return healthAmount == 0;
+        return healthAmount <= 0;
     }
 
     public void TakeDamage(float damage)
@@ -297,13 +285,4 @@ public class PlayerController : MonoBehaviour
         isInCombat = true;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Enemy"))
-        {
-            //Trigger combat if enemy trigger entered
-            GameManager.Instance.UpdateGameState(GameState.CombatStart);
-            isInCombat = true;
-        }
-    }
 }
