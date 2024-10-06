@@ -71,6 +71,15 @@ public class CombatManager : MonoBehaviour
         }
     }
 
+    public void CheckEnemy()
+    {
+        if (currentState == CombatState.PlayerTurn)
+        {
+            enemyHealthText.text = "Enemy: " + enemyController.health + "\n Weakness: "+ Element.GetCounterOf(enemyController.element);
+            currentState = CombatState.EnemyTurn;
+        }
+    }
+
     public void OpenCombatScreen()
     {
         combatText.text = "A " + enemyController.name + " appears!";
@@ -85,7 +94,7 @@ public class CombatManager : MonoBehaviour
 
     public void ContinueMoving()
     {
-        playerController.EnableMovement();
+        GameManager.Instance.UpdateGameState(GameState.Movement);
         continueButton.SetActive(false);
     }
 

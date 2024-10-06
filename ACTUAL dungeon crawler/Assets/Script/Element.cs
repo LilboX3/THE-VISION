@@ -47,4 +47,21 @@ public class Element : MonoBehaviour
 
         return 1;
     }
+
+    public static ElementType GetCounterOf(ElementType element)
+    {
+        switch (element)
+        {
+            case ElementType.Melee:
+                return ElementType.Prayer;
+            case ElementType.Magic:
+                return ElementType.Melee;
+            case ElementType.Sin:
+                return ElementType.Magic;
+            case ElementType.Prayer:
+                return ElementType.Sin;
+            default:
+                throw new System.ArgumentException("just... HOW THE FUCK did you even get here");
+        }
+    }
 }
