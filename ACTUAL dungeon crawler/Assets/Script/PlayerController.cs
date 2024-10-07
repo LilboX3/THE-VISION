@@ -278,6 +278,12 @@ public class PlayerController : MonoBehaviour
         isInCombat = false;
     }
 
+    public void RestoreHealth(int amount)
+    {
+        healthAmount += amount;
+        healthBar.value = healthAmount;
+    }
+
     public void GetJumpscared()
     {
         //TODO: Any extra info/mechanics for jumpscare enemy?
