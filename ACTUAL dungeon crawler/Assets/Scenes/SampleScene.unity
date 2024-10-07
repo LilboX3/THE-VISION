@@ -5054,6 +5054,7 @@ MonoBehaviour:
   _combatScreen: {fileID: 474422758}
   combatText: {fileID: 835421615}
   enemyHealthText: {fileID: 2077195331}
+  clueText: {fileID: 12059926}
   playerObject: {fileID: 2056979120}
   enemyObject: {fileID: 0}
   continueButton: {fileID: 1949153919}
