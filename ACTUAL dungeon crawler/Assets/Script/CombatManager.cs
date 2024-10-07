@@ -8,6 +8,7 @@ public class CombatManager : MonoBehaviour
     public GameObject _combatScreen;
     public TextMeshProUGUI combatText;
     public TextMeshProUGUI enemyHealthText;
+    public TextMeshProUGUI clueText;
     public GameObject playerObject;
     public GameObject enemyObject;
     public GameObject continueButton;
@@ -75,7 +76,8 @@ public class CombatManager : MonoBehaviour
     {
         if (currentState == CombatState.PlayerTurn)
         {
-            enemyHealthText.text = "Enemy: " + enemyController.health + "\n Weakness: "+ Element.GetCounterOf(enemyController.element);
+            string clue = Element.ClueMessageBasedOnElement(enemyController.element);
+            clueText.text = clue;
             currentState = CombatState.EnemyTurn;
         }
     }

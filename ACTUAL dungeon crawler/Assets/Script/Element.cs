@@ -64,4 +64,28 @@ public class Element : MonoBehaviour
                 throw new System.ArgumentException("just... HOW THE FUCK did you even get here");
         }
     }
+
+    public static string ClueMessageBasedOnElement(ElementType element)
+    {
+        string message = "";
+        switch (element)
+        {
+            case ElementType.Melee:
+                message = "It looks like it's about to punch you ...";
+                break;
+            case ElementType.Magic:
+                message = "It's pulsing with arcane aenergy ...";
+                break;
+            case ElementType.Sin:
+                message = "You feel a dark aura around you ...";
+                break;
+            case ElementType.Prayer:
+                message = "It's radiating a bright light ...";
+                break;
+            default:
+                message = "WHAT. this shouldnt be possible (but im impressed)";
+                break;
+        }
+        return message;
+    }
 }
