@@ -20,28 +20,28 @@ public class Element : MonoBehaviour
                 if (otherElement == ElementType.Prayer)
                     return 2;
                 if (otherElement == ElementType.Magic)
-                    return 1 / 2;
+                    return 0.5f;
                 break;
 
             case ElementType.Magic:
                 if (otherElement == ElementType.Melee)
                     return 2;
                 if (otherElement == ElementType.Sin)
-                    return 1 / 2;
+                    return 0.5f;
                 break;
 
             case ElementType.Sin:
                 if (otherElement == ElementType.Magic)
                     return 2;
                 if (otherElement == ElementType.Prayer)
-                    return 1 / 2;
+                    return 0.5f;
                 break;
 
             case ElementType.Prayer:
                 if (otherElement == ElementType.Sin)
                     return 2;
                 if (otherElement == ElementType.Melee)
-                    return 1 / 2;
+                    return 0.5f;
                 break;
         }
 
