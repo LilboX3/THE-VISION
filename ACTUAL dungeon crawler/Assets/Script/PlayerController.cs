@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
             {
                 RotateRight();
             }
-            if (Input.GetButtonDown("Look up") && !IsWallBehindPlayer())
+            if (Input.GetButtonDown("Look up"))
             {
                 if (lookingUp)
                 {
@@ -190,7 +190,7 @@ public class PlayerController : MonoBehaviour
         return isWall;
     }
 
-    public bool IsWallBehindPlayer()
+    /*public bool IsWallBehindPlayer()
     {
         float rayLength = 1.0f;
         Vector3 direction = -transform.forward;
@@ -213,7 +213,7 @@ public class PlayerController : MonoBehaviour
         }
 
         return isWall;
-    }
+    }*/
 
     public void RotateLeft() { if (AtRest) targetRotation -= Vector3.up * rotationAngle; }
     public void RotateRight() { if (AtRest) targetRotation += Vector3.up * rotationAngle; }
