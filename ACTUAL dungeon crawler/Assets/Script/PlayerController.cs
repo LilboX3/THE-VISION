@@ -7,7 +7,7 @@ public class PlayerController : MonoBehaviour
     public bool smoothTransition = false;
     public float transitionSpeed = 3f;
     public float transitionRotationSpeed = 500f;
-    public IEquipment[] items = new IEquipment[3];
+    public EquipmentBase[] items = new EquipmentBase[3];
 
     public Slider healthBar;
     public Image healthImage;
@@ -34,17 +34,17 @@ public class PlayerController : MonoBehaviour
     Vector3 prevTargetGridPos;
     Vector3 targetRotation;
 
-    List<IEquipment> equipment;
+    List<EquipmentBase> equipment;
 
-    List<IEquipment> activeEquipment;
+    List<EquipmentBase> activeEquipment;
 
     private void Start()
     {
         int targetX = (int)transform.position.x;
         int targetZ = (int)transform.position.z;
         targetGridPos = new Vector3(targetX, transform.position.y, targetZ);
-        equipment = new List<IEquipment>();
-        activeEquipment = new List<IEquipment>();
+        equipment = new List<EquipmentBase>();
+        activeEquipment = new List<EquipmentBase>();
     }
     private void Update()
     {
@@ -297,12 +297,12 @@ public class PlayerController : MonoBehaviour
         isInCombat = true;
     }
 
-    public void RemoveEquipment(IEquipment toBeRemoved)
+    public void RemoveEquipment(EquipmentBase toBeRemoved)
     {
         equipment.Remove(toBeRemoved);
     }
 
-    public void PickUpEquipment(IEquipment toBeAdded)
+    public void PickUpEquipment(EquipmentBase toBeAdded)
     {
         equipment.Add(toBeAdded);
     }

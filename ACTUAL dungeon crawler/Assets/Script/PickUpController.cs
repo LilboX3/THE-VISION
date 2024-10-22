@@ -2,7 +2,11 @@ using UnityEngine;
 
 public class PickUpController : MonoBehaviour
 {
-    public int restoreAmount;
+    [SerializeField, Restrict(typeof(IPickupCallback))]
+    private UnityEngine.Object PickupCallbackField;
+
+    private IPickupCallback _enterCallback => PickupCallbackField as IPickupCallback;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +23,13 @@ public class PickUpController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            Debug.Log("restoring");
-            other.gameObject.GetComponent<PlayerController>().RestoreHealth(restoreAmount);
-            Destroy(gameObject);
+            var playerComponent = other.gameObject.GetComponent<PlayerController>();
+            if (_enterCallback != null)
+            {
+                Debug.Log("callingBack");
+                _enterCallback.PickupCallback(playerComponent);
+                Destroy(gameObject);
+            }
         }
     }
 }

@@ -1,14 +1,13 @@
 using UnityEngine;
 
-public class Equipment_MagicMissile : MonoBehaviour, IEquipment
+public class Equipment_MagicMissile : EquipmentBase
 {
     public float damage = 10f;
 
     public int uses = 5;
 
-    public float SelfDestructTime = 4f;
 
-    public void DoBattleEquipmentEffect(PlayerController player, EnemyController enemy)
+    public override void DoBattleEquipmentEffect(PlayerController player, EnemyController enemy)
     {
         var thisElement = ElementType.Magic;
 
@@ -20,10 +19,4 @@ public class Equipment_MagicMissile : MonoBehaviour, IEquipment
             Break(player);
     }
 
-    public void Break(PlayerController player)
-    {
-        player.RemoveEquipment(this);
-
-        StartCoroutine(this.SelfDestructAfter(SelfDestructTime));
-    }
 }
