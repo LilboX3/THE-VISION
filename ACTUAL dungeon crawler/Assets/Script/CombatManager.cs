@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -30,7 +28,7 @@ public class CombatManager : MonoBehaviour
     {
         if (inCombat)
         {
-            if(currentState == CombatState.EnemyTurn)
+            if (currentState == CombatState.EnemyTurn)
             {
                 /*float damageModifier = Element.getDamageModifierAttackedBy(playerController.element, enemyController.element);
                 float damageAgainstPlayer = playerController.elementStat * damageModifier;

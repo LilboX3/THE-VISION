@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using UnityEditor.Animations;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -50,7 +47,7 @@ public class GameManager : MonoBehaviour
 
         }
     }
-  
+
 }
 
 public enum GameState

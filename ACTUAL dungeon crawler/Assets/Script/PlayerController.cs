@@ -1,5 +1,4 @@
-using Assets.Script;
-using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -17,7 +16,7 @@ public class PlayerController : MonoBehaviour
     public Image manaImage;
     public float manaAmount = 7f;
 
-    public Element.ElementType element;
+    public ElementType element;
     public int elementStat;
 
     private float minStopDistance = 0.05f;
@@ -35,12 +34,18 @@ public class PlayerController : MonoBehaviour
     Vector3 prevTargetGridPos;
     Vector3 targetRotation;
 
+    List<IEquipment> equipment;
+
+    List<IEquipment> activeEquipment;
+
     private void Start()
- {
-     int targetX = (int)transform.position.x;
-     int targetZ = (int)transform.position.z;
-     targetGridPos = new Vector3(targetX, transform.position.y, targetZ);
- }
+    {
+        int targetX = (int)transform.position.x;
+        int targetZ = (int)transform.position.z;
+        targetGridPos = new Vector3(targetX, transform.position.y, targetZ);
+        equipment = new List<IEquipment>();
+        activeEquipment = new List<IEquipment>();
+    }
     private void Update()
     {
         if (!isInCombat)
@@ -103,7 +108,8 @@ public class PlayerController : MonoBehaviour
                 {
                     RotateDown();
                     lookingUp = false;
-                } else
+                }
+                else
                 {
                     RotateUp();
                     lookingUp = true;
@@ -159,7 +165,7 @@ public class PlayerController : MonoBehaviour
     {
 
         float rayLength = 1.0f;
-        Vector3 origin = new Vector3(transform.position.x, transform.position.y-0.5f, transform.position.z);
+        Vector3 origin = new Vector3(transform.position.x, transform.position.y - 0.5f, transform.position.z);
 
         Debug.DrawRay(origin, intention * rayLength, Color.red, 1.0f);
 
@@ -173,7 +179,7 @@ public class PlayerController : MonoBehaviour
                 Debug.Log("HIT A WALL FR!!!!!!.");
                 isWall = true;
             }
-            else if(hitWall.collider.gameObject.CompareTag("Enemy"))
+            else if (hitWall.collider.gameObject.CompareTag("Enemy"))
             {
                 Debug.Log("Hit something, but it's not a wall. It's a " + hitWall.collider.gameObject.tag);
                 GameManager.Instance.enemyObject = hitWall.collider.gameObject;
@@ -289,6 +295,16 @@ public class PlayerController : MonoBehaviour
         //TODO: Any extra info/mechanics for jumpscare enemy?
         GameManager.Instance.UpdateGameState(GameState.CombatStart);
         isInCombat = true;
+    }
+
+    public void RemoveEquipment(IEquipment toBeRemoved)
+    {
+        equipment.Remove(toBeRemoved);
+    }
+
+    public void PickUpEquipment(IEquipment toBeAdded)
+    {
+        equipment.Add(toBeAdded);
     }
 
 }

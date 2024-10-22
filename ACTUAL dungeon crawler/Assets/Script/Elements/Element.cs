@@ -1,17 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Element : MonoBehaviour
 {
-    public enum ElementType
-    {
-        Melee,
-        Magic,
-        Sin,
-        Prayer
-    }
-
     public static float getDamageModifierAttackedBy(ElementType thisElement, ElementType otherElement)
     {
         switch (thisElement)
