@@ -21,6 +21,7 @@ the cleaner vision/[Bb]uilds/
 the cleaner vision/[Ll]ogs/
 the cleaner vision/[Uu]ser[Ss]ettings/
 the cleaner vision/*.log
+the cleaner vision/.vscode
 
 # By default unity supports Blender asset imports, *.blend1 blender files do not need to be commited to version control.
 *.blend1
