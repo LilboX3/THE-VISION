@@ -22,8 +22,8 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        int targetX = (int)transform.position.x;
-        int targetZ = (int)transform.position.z;
+        float targetX = (int)transform.position.x + 0.5f;
+        float targetZ = (int)transform.position.z + 0.5f;
         targetGridPos = new Vector3(targetX, transform.position.y, targetZ);
     }
     private void Update()
@@ -36,11 +36,13 @@ public class PlayerController : MonoBehaviour
             {
                 if (lookingUp)
                 {
+                    Debug.Log("looking up!!!");
                     RotateDown();
                     lookingUp = false;
                 }
                 else
                 {
+                    Debug.Log("looking down!!!");
                     RotateUp();
                     lookingUp = true;
                 }
@@ -61,10 +63,12 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Look Left") && !lookingUp)
         {
+            Debug.Log("looking left!!!");
             RotateLeft();
         }
         if (Input.GetButtonDown("Look Right") && !lookingUp)
         {
+            Debug.Log("looking left!!!");
             RotateRight();
         }
     }
@@ -101,12 +105,15 @@ public class PlayerController : MonoBehaviour
     {
         if (GameControllers.connected)
         {
+            Debug.Log("using controller!!!");
             verticalInput = Input.GetAxisRaw("Vertical DPAD");
         }
         else
         {
             verticalInput = Input.GetAxisRaw("Vertical");
         }
+
+        Debug.Log("VERTICAL INPUT IS: " + verticalInput);
     }
 
 
