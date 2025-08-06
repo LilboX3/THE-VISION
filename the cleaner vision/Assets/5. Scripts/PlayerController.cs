@@ -34,21 +34,23 @@ public class PlayerController : MonoBehaviour
         {
             if (!isVerticalInUse)
             {
-                if (lookingUp)
-                {
-                    Debug.Log("looking up!!!");
-                    RotateDown();
-                    lookingUp = false;
-                }
-                else
+                if (lookingUp && AtRest)
                 {
                     Debug.Log("looking down!!!");
+                    RotateDown();
+                    lookingUp = false;
+                    isVerticalInUse = true;
+                }
+                else if (AtRest)
+                {
+                    Debug.Log("looking up!!!");
                     RotateUp();
                     lookingUp = true;
+                    isVerticalInUse = true;
                 }
             }
         }
-        if (verticalInput > 0)
+        if (verticalInput > 0 && AtRest)
         {
             if (!isVerticalInUse)
             {
@@ -61,16 +63,17 @@ public class PlayerController : MonoBehaviour
             isVerticalInUse = false;
         }
 
-        if (Input.GetButtonDown("Look Left") && !lookingUp)
+        if (AtRest && Input.GetButtonDown("Look Left") && !lookingUp)
         {
             Debug.Log("looking left!!!");
             RotateLeft();
         }
-        if (Input.GetButtonDown("Look Right") && !lookingUp)
+        if (AtRest && Input.GetButtonDown("Look Right") && !lookingUp)
         {
             Debug.Log("looking left!!!");
             RotateRight();
         }
+        Debug.Log("IS AT REST IS: " + AtRest);
     }
 
     private void FixedUpdate()
@@ -112,8 +115,6 @@ public class PlayerController : MonoBehaviour
         {
             verticalInput = Input.GetAxisRaw("Vertical");
         }
-
-        Debug.Log("VERTICAL INPUT IS: " + verticalInput);
     }
 
 
@@ -144,18 +145,18 @@ public class PlayerController : MonoBehaviour
         return isWall;
     }
 
-    public void RotateLeft() { if (AtRest) targetRotation -= Vector3.up * rotationAngle; }
-    public void RotateRight() { if (AtRest) targetRotation += Vector3.up * rotationAngle; }
-    public void RotateUp() { if (AtRest) targetRotation += Vector3.left * rotationAngle; }
-    public void RotateDown() { targetRotation.x = 0; }
+    public void RotateLeft() { targetRotation -= Vector3.up * rotationAngle; }
+    public void RotateRight() { targetRotation += Vector3.up * rotationAngle; }
+    public void RotateUp() { targetRotation += Vector3.left * rotationAngle; }
+    public void RotateDown() { targetRotation += Vector3.right * rotationAngle; }
 
     public void MoveForward()
     {
-        if (AtRest && !IsWall(transform.forward + moveVectorUp)) targetGridPos += transform.forward;
+        if (!IsWall(transform.forward + moveVectorUp)) targetGridPos += transform.forward;
     }
     public void MoveBackward()
     {
-        if (AtRest && !IsWall(-transform.forward + moveVectorUp)) targetGridPos -= transform.forward;
+        if (!IsWall(-transform.forward + moveVectorUp)) targetGridPos -= transform.forward;
     }
 
     private bool AtRest
@@ -164,7 +165,8 @@ public class PlayerController : MonoBehaviour
         {
             //At rest when stopped moving or rotating, or when about to stop (distance small enough)
             if ((Vector3.Distance(transform.position, targetGridPos) < minStopDistance) &&
-                (Vector3.Distance(transform.eulerAngles, targetRotation) < minStopDistance)) //TODO: fix atrest for fuck sake
+                (Quaternion.Angle(transform.rotation, Quaternion.Euler(targetRotation.x, targetRotation.y, targetRotation.z))
+                < minStopDistance)) //TODO: fix atrest for fuck sake SHIT IS FIXED !!! 
                 return true;
             else
                 return false;
