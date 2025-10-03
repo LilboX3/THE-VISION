@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -22,9 +23,19 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        float targetX = (int)transform.position.x + 0.5f;
-        float targetZ = (int)transform.position.z + 0.5f;
-        targetGridPos = new Vector3(targetX, transform.position.y, targetZ);
+        // Make sure player starts position in 0.5 grid
+        float posX = transform.position.x;
+        float posZ = transform.position.z;
+        if (posX % 1 != 0.5)
+        {
+            posX = posX < 0 ? (int)posX - 0.5f : (int)posX + 0.5f;
+        }
+        if (posZ % 1 != 0.5)
+        {
+            posZ = posZ < 0 ? (int)posZ - 0.5f : (int)posZ + 0.5f; 
+        }
+        targetGridPos = new Vector3(posX, transform.position.y, posZ);
+        targetRotation = transform.rotation.eulerAngles;
     }
     private void Update()
     {
@@ -65,15 +76,12 @@ public class PlayerController : MonoBehaviour
 
         if (AtRest && Input.GetButtonDown("Look Left") && !lookingUp)
         {
-            Debug.Log("looking left!!!");
             RotateLeft();
         }
         if (AtRest && Input.GetButtonDown("Look Right") && !lookingUp)
         {
-            Debug.Log("looking left!!!");
             RotateRight();
         }
-        Debug.Log("IS AT REST IS: " + AtRest);
     }
 
     private void FixedUpdate()
