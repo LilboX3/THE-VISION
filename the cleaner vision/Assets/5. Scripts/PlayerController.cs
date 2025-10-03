@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour
         {
             if (!isVerticalInUse)
             {
-                if (lookingUp && AtRest)
+                if (lookingUp)
                 {
                     Debug.Log("looking down!!!");
                     RotateDown();
@@ -174,7 +174,7 @@ public class PlayerController : MonoBehaviour
             //At rest when stopped moving or rotating, or when about to stop (distance small enough)
             if ((Vector3.Distance(transform.position, targetGridPos) < minStopDistance) &&
                 (Quaternion.Angle(transform.rotation, Quaternion.Euler(targetRotation.x, targetRotation.y, targetRotation.z))
-                < minStopDistance)) //TODO: fix atrest for fuck sake SHIT IS FIXED !!! 
+                < minStopDistance) && !lookingUp) //TODO: fix atrest for fuck sake SHIT IS FIXED !!! 
                 return true;
             else
                 return false;
