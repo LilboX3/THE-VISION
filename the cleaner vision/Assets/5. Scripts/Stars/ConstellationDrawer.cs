@@ -4,7 +4,11 @@ using UnityEngine;
 public class ConstellationDrawer : MonoBehaviour
 {
     public List<Transform> stars;
-    public LineRendererUI lineRenderer;
+    [SerializeField] private LineRendererUI linePrefab; 
+    [SerializeField] private RectTransform container; //Parent, canvas or star background
+
+    private List<LineRendererUI> activeLines = new List<LineRendererUI>();
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -14,14 +18,19 @@ public class ConstellationDrawer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        List<Vector3> starPositions = new List<Vector3>();
-        foreach (var star in stars)
+        foreach(var line in activeLines)
         {
-            Vector3 worldPos = star.position;
-            starPositions.Add(worldPos);
+            Destroy(line.gameObject);
         }
-        lineRenderer.CreateLine(starPositions[0], starPositions[1], Color.yellow);
-        lineRenderer.CreateLine(starPositions[1], starPositions[2], Color.yellow);
+        activeLines.Clear();
+
+        for(int i = 0; i < stars.Count - 1; i++)
+        {
+            var line = Instantiate(linePrefab, container);
+            line.transform.SetAsFirstSibling();
+            line.CreateLine(stars[i].position, stars[i+1].position, Color.white);
+            activeLines.Add(line);
+        }
     }
 }
 

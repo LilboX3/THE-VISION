@@ -10,14 +10,23 @@ public class LineRendererUI : MonoBehaviour
     {
         m_image.color = color;
 
-        Vector2 point1 = new Vector2(positionTwo.x, positionTwo.y);
-        Vector2 point2 = new Vector2(positionOne.x, positionOne.y);
-        Vector2 midpoint = (point1 + point2) / 2f;
+        //Vector2 point1 = new Vector2(positionTwo.x, positionTwo.y);
+        //Vector2 point2 = new Vector2(positionOne.x, positionOne.y);
+        //Vector2 midpoint = (point1 + point2) / 2f;
+        Vector2 start = positionOne;
+        Vector2 end = positionTwo;
+        Vector2 dir = end - start;
 
-        m_myTransform.position = midpoint;
+        m_myTransform.position = start;
 
-        Vector2 dir = point1 - point2;
-        m_myTransform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
-        m_myTransform.localScale = new Vector3(dir.magnitude, 1f, 1f);
+        //Vector2 dir = point1 - point2;
+        //m_myTransform.rotation = Quaternion.Euler(0f, 0f, Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg);
+        //m_myTransform.localScale = new Vector3(dir.magnitude, 1f, 1f);
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        m_myTransform.rotation = Quaternion.Euler(0f, 0f, angle);
+
+        // Set line length
+        m_myTransform.sizeDelta = new Vector2(dir.magnitude, m_myTransform.sizeDelta.y);
     }
 }
